@@ -47,11 +47,15 @@
                 </div>
             </div>
             <div class="container-md" ALIGN="center">
-                <button type="button" value="#{archivo.archivoSubido}" class="btn btn-light btn-lg"> 
-                    <!--input type="file" style="position: absolute; opacity: 0;" accept=".pdm"-->
-                    Seleccione su archivo(.pdm) <!--/input-->
-                </button> 
-                <br/>
+                <!--button type="button" value="#{archivo.archivoSubido}" class="btn btn-light btn-lg"> 
+                    <!input type="file" style="position: absolute; opacity: 0;" accept=".pdm">
+                    <!Seleccione su archivo(.pdm) <!/input>
+                <!/button--> 
+                <h:form enctype="multipart/form-data">
+                    <h:inputFile class="btn btn-light btn-lg" value="#{ControllerPostgres.ControladorPostgres.archivoSubido}">
+                </h:inputFile>
+                </h:form>
+               <br/>
                 <h5 class="text-center" style="color: #ffffff">O arrastre su archivo y suelte aquí</h5>
             </div>
             
