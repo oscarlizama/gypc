@@ -38,13 +38,13 @@ public class Leer {
         
 
         //Variables para guardar los atributos de la clase AtributoBD
-        String idAtributo="", nombreA="", tipoA="", llavePri="";
+        String idAtributo="", nombreA="", tipoA="", llavePri="",linea="",linea2="",nombreTabla="",idTabla="";
         int longitudA=0, precisionA=0;
         boolean mandatorioA=false;
         
         //Variables apoyo
-        boolean dentro=false,dentro2=false;
-        int inicio, fin;
+        boolean dentro=false,dentro2=false,dentro3=false,dentro4=false;
+        int inicio, fin,inicio2,ultima2,inicio3,ultima3,n=0,i=0;
         
         //Objeto de BD, sera inicializado cuando se lea el archivo
         BD base;
@@ -52,6 +52,8 @@ public class Leer {
         List<AtributoBD> atributos=new ArrayList<AtributoBD>();
         
         AtributoBD atributoBD;
+        List<Tabla> tablas = new ArrayList<Tabla>();
+        Tabla tabla;
         
         try{
             
@@ -101,7 +103,51 @@ public class Leer {
                            }
                            base = new BD(nombre,cod);
                         }
-                    
+                        
+                     //para clase tabla
+                     if(strLinea.trim().contains("<c:Tables>")){
+                        dentro3=true;
+                        }
+                
+                       while(dentro3){
+                            if(strLinea.trim().contains("</c:Tables>")){
+                                dentro3=false;   
+                            }
+                            
+                            if(!strLinea.equals("<c:Columns>")){
+                                
+                                if(strLinea.trim().contains("<o:Table Id=") || n != 0)
+                                {
+                                   n++;
+                                   if(strLinea.trim().contains("<o:Table Id="))
+                                     {
+                                     inicio3 = strLinea.indexOf("=");
+                                     linea2 = strLinea.substring(inicio3+2);
+                                     ultima3 = linea2.indexOf(">");
+                                     idTabla = linea2.substring(0, ultima3-1);
+                                     
+                                     }
+                                
+                                   if(n > 2)
+                                   {
+                                    if (strLinea.trim().contains("<a:Name>") &&  !strLinea.trim().contains("PK") && !strLinea.trim().contains("FK") && !strLinea.trim().contains("_")){
+                                     inicio2 = strLinea.indexOf(">");
+                                     linea = strLinea.substring(inicio2+1);
+                                     ultima2 = linea.indexOf("/");
+                                     nombreTabla = linea.substring(0, ultima2-1);
+                                     n=0;
+                                     } 
+                                   }
+                                }
+        
+                            }
+                            else{
+                                tabla=new Tabla(idTabla,nombreTabla);
+                                tablas.add(tabla);
+                                }
+                        strLinea=buffer.readLine();
+                    }
+                        
                     //Para clase AtributoBD
                     if(strLinea.trim().contains("<c:Columns>")){
                         dentro=true;
