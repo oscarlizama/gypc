@@ -14,6 +14,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 
@@ -44,6 +46,8 @@ public class Leer {
         boolean dentro=false,dentro2=false;
         int inicio, fin;
         
+        //Objeto de BD, sera inicializado cuando se lea el archivo
+        BD base;
         /*LISTA UTILIZADA SOLO PARA FINES DE PRUEBA*/
         List<AtributoBD> atributos=new ArrayList<AtributoBD>();
         
@@ -62,6 +66,41 @@ public class Leer {
             
             //Leer el archivo linea a linea
             while ((strLinea = buffer.readLine()) != null){
+                
+                 //Para Clase BD
+                    if(strLinea.startsWith("<?PowerDesigner")){
+                        dentro=true;
+                        String nombre="", cod="", t;//t es una variable auixliar para separar cadenas
+                        while(dentro){
+                            //busca el atributo codificacion en la linea
+                           if(strLinea.contains("AppLocale")){
+                                inicio=strLinea.indexOf("AppLocale");
+                                t=strLinea.substring(inicio);
+                                Pattern pattern = Pattern.compile("\"[^\"]*+\"([^\"])");
+                                Matcher match = pattern.matcher(t);
+                                if(match.find()){
+                                    cod=match.group(0);
+                                    inicio=cod.indexOf("\"")+1;
+                                    fin=cod.lastIndexOf("\"");
+                                    cod=cod.substring(inicio,fin).trim();                                    
+                                }
+                           }
+                           //busca atributo nombre en la linea 
+                           if(strLinea.contains("Name")){
+                                inicio=strLinea.indexOf("Name");
+                                t=strLinea.substring(inicio);
+                                Pattern pattern = Pattern.compile("\"[^\"]*+\"([^\"])");
+                                Matcher match = pattern.matcher(t);
+                                if(match.find()){
+                                    nombre=match.group(0);
+                                    inicio=nombre.indexOf("\"")+1;
+                                    fin=nombre.lastIndexOf("\"");
+                                    nombre=nombre.substring(inicio,fin).trim();                                    
+                                }
+                                dentro=false;
+                           }
+                           base = new BD(nombre,cod);
+                        }
                     
                     //Para clase AtributoBD
                     if(strLinea.trim().contains("<c:Columns>")){
@@ -141,6 +180,10 @@ public class Leer {
                             }
                         }
                         strLinea=buffer.readLine();   
+                    }
+                    
+                   
+                       
                     }
                 }
                 // Cerramos el archivo
