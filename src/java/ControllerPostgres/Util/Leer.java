@@ -52,7 +52,7 @@ public class Leer {
         List<AtributoBD> atributos=new ArrayList<AtributoBD>();
         
         AtributoBD atributoBD;
-        List<Tabla> tablas = new ArrayList<Tabla>();
+        
         Tabla tabla = null;
         
         try{
@@ -144,7 +144,7 @@ public class Leer {
                             }
                             else{
                                 tabla=new Tabla(idTabla,nombreTabla);
-                                tablas.add(tabla);
+                                
                                 base.addTabla(tabla);
                                 }
                         strLinea=buffer.readLine();
@@ -229,10 +229,8 @@ public class Leer {
                             }
                         }
                         strLinea=buffer.readLine();   
-                    }
-                    
-                   
-                       
+                    }           
+                                         
                     
                 }
                 // Cerramos el archivo
