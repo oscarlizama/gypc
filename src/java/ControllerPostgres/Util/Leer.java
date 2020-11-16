@@ -47,13 +47,13 @@ public class Leer {
         int inicio, fin,inicio2,ultima2,inicio3,ultima3,n=0,i=0;
         
         //Objeto de BD, sera inicializado cuando se lea el archivo
-        BD base;
+        BD base = null;
         /*LISTA UTILIZADA SOLO PARA FINES DE PRUEBA*/
         List<AtributoBD> atributos=new ArrayList<AtributoBD>();
         
         AtributoBD atributoBD;
         List<Tabla> tablas = new ArrayList<Tabla>();
-        Tabla tabla;
+        Tabla tabla = null;
         
         try{
             
@@ -103,7 +103,8 @@ public class Leer {
                            }
                            base = new BD(nombre,cod);
                         }
-                        
+                        strLinea=buffer.readLine();
+                    }    
                      //para clase tabla
                      if(strLinea.trim().contains("<c:Tables>")){
                         dentro3=true;
@@ -144,6 +145,7 @@ public class Leer {
                             else{
                                 tabla=new Tabla(idTabla,nombreTabla);
                                 tablas.add(tabla);
+                                base.addTabla(tabla);
                                 }
                         strLinea=buffer.readLine();
                     }
@@ -199,6 +201,7 @@ public class Leer {
                             else{//Se crea objeto tipo atributoBD cuando todos los atributos de la tabla han sido leidos
                                 atributoBD=new AtributoBD(idAtributo,nombreA,tipoA,longitudA,precisionA,mandatorioA, false, false);
                                 atributos.add(atributoBD);
+                                tabla.addAtributoBD(atributoBD);
                                 precisionA=0;
                                 mandatorioA=false;
                             }
@@ -230,7 +233,7 @@ public class Leer {
                     
                    
                        
-                    }
+                    
                 }
                 // Cerramos el archivo
                 entrada.close();
