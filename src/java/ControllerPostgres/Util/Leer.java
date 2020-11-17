@@ -54,8 +54,7 @@ public class Leer {
         AtributoBD atributoBD;
         //Obajeto de tablas
         Tabla tabla = null;
-        //LecturaBD
-        LecturaBD lecturaBD=new LecturaBD(base);
+        
         
         try{
             
@@ -312,6 +311,8 @@ public class Leer {
                         }                       
                     }
                 }
+                //LecturaBD
+                LecturaBD lecturaBD=new LecturaBD(base);
                 // Cerramos el archivo
                 entrada.close();
         }catch(Exception ex){
