@@ -248,7 +248,7 @@ public class Leer {
                                     fin=strLinea.lastIndexOf("\"");
                                     id=strLinea.substring(inicio, fin).trim();                                    
                                 }
-                                if(strLinea.startsWith("<a:Name")){
+                                if(strLinea.startsWith("<a:Code")){
                                     inicio=strLinea.indexOf(">")+1;
                                     fin=strLinea.lastIndexOf("<");
                                     nom=strLinea.substring(inicio, fin).trim();                                 
