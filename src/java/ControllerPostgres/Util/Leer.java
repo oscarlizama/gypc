@@ -52,8 +52,10 @@ public class Leer {
         List<AtributoBD> atributos=new ArrayList<AtributoBD>();
         
         AtributoBD atributoBD;
-        
+        //Obajeto de tablas
         Tabla tabla = null;
+        //LecturaBD
+        LecturaBD lecturaBD=new LecturaBD(base);
         
         try{
             
@@ -98,11 +100,13 @@ public class Leer {
                                     inicio=nombre.indexOf("\"")+1;
                                     fin=nombre.lastIndexOf("\"");
                                     nombre=nombre.substring(inicio,fin).trim();                                    
-                                }
-                                dentro=false;
+                                }                                
                            }
-                           base = new BD(nombre,cod);
+                           if(!nombre.isEmpty()&&!cod.isEmpty()) {
+                               dentro=false;
+                           }                                                           
                         }
+                        base = new BD(nombre,cod);
                         strLinea=buffer.readLine();
                     }    
                      //para clase tabla
@@ -231,7 +235,82 @@ public class Leer {
                         strLinea=buffer.readLine();   
                     }           
                                          
-                    
+                   //Clase Llave Foranea
+                   if(strLinea.contains("<c:References>")){
+                       String id="",nom="",tPadre="", tHijo="",aPadre="", aHijo="",onDelete="", onUpdate="",cardinalidad="";
+                       dentro = true; 
+                       
+                       while(dentro){
+                           
+                           if(strLinea.contains("</c:References")) dentro=false;
+                           else{                           
+                                if(strLinea.startsWith("<o:Reference")){
+                                    inicio=strLinea.indexOf("\"")+1;
+                                    fin=strLinea.lastIndexOf("\"");
+                                    id=strLinea.substring(inicio, fin).trim();                                    
+                                }
+                                if(strLinea.startsWith("<a:Name")){
+                                    inicio=strLinea.indexOf(">")+1;
+                                    fin=strLinea.lastIndexOf("<");
+                                    nom=strLinea.substring(inicio, fin).trim();                                 
+                                 }
+                                if(strLinea.startsWith("<a:Cardinality")){
+                                    inicio=strLinea.indexOf(">")+1;
+                                    fin=strLinea.lastIndexOf("<");
+                                    cardinalidad=strLinea.substring(inicio, fin).trim();                                 
+                                }
+                                if(strLinea.startsWith("<a:UpdateConstrait")){
+                                    inicio=strLinea.indexOf(">")+1;
+                                    fin=strLinea.lastIndexOf("<");
+                                    onUpdate=strLinea.substring(inicio, fin).trim();                                 
+                                }
+                                if(strLinea.startsWith("<a:DeleteConstrait")){
+                                    inicio=strLinea.indexOf(">")+1;
+                                    fin=strLinea.lastIndexOf("<");
+                                    onDelete=strLinea.substring(inicio, fin).trim();                                 
+                                }
+                                if(strLinea.startsWith("<c:ParentTable")){
+                                    while(!strLinea.startsWith("</c:ParentTable")){
+                                        if(strLinea.startsWith("<o:Table")){
+                                            inicio=strLinea.indexOf("\"")+1;
+                                            fin=strLinea.lastIndexOf("\"");
+                                            tPadre=strLinea.substring(inicio, fin).trim();                                         
+                                        }   
+                                    }                                    
+                                }
+                                if(strLinea.startsWith("<c:ChildTable")){
+                                    while(!strLinea.startsWith("</c:ChildTable")){
+                                        if(strLinea.startsWith("<o:Table")){
+                                            inicio=strLinea.indexOf("\"")+1;
+                                            fin=strLinea.lastIndexOf("\"");
+                                            tHijo=strLinea.substring(inicio, fin).trim();                                         
+                                        }   
+                                    }                                    
+                                }
+                                if(strLinea.startsWith("<c:Object1")){
+                                    while(!strLinea.startsWith("</c:Object1")){
+                                        if(strLinea.startsWith("<o:Column")){
+                                            inicio=strLinea.indexOf("\"")+1;
+                                            fin=strLinea.lastIndexOf("\"");
+                                            aPadre=strLinea.substring(inicio, fin).trim();                                         
+                                        }   
+                                    }                                    
+                                }
+                                if(strLinea.startsWith("<c:Object2")){
+                                    while(!strLinea.startsWith("</c:Object2")){
+                                        if(strLinea.startsWith("<o:Column")){
+                                            inicio=strLinea.indexOf("\"")+1;
+                                            fin=strLinea.lastIndexOf("\"");
+                                            aHijo=strLinea.substring(inicio, fin).trim();                                         
+                                        }   
+                                    }                                    
+                                }
+                                LlaveForanea fk = new LlaveForanea(id, nom, tPadre, tHijo, aPadre,aHijo ,onDelete, onUpdate, cardinalidad);
+                                base.addLlaveForanea(fk);                                
+                            } 
+                            strLinea=buffer.readLine(); 
+                        }                       
+                    }
                 }
                 // Cerramos el archivo
                 entrada.close();
