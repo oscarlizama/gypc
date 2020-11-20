@@ -274,8 +274,7 @@ public class Leer {
                                             inicio=strLinea.indexOf("\"")+1;
                                             fin=strLinea.lastIndexOf("\"");
                                             tPadre=strLinea.substring(inicio, fin).trim();                                         
-                                        }
-                                        strLinea=buffer.readLine();
+                                        }   
                                     }                                    
                                 }
                                 if(strLinea.startsWith("<c:ChildTable")){
@@ -284,8 +283,7 @@ public class Leer {
                                             inicio=strLinea.indexOf("\"")+1;
                                             fin=strLinea.lastIndexOf("\"");
                                             tHijo=strLinea.substring(inicio, fin).trim();                                         
-                                        } 
-                                        strLinea=buffer.readLine();
+                                        }   
                                     }                                    
                                 }
                                 if(strLinea.startsWith("<c:Object1")){
@@ -294,8 +292,7 @@ public class Leer {
                                             inicio=strLinea.indexOf("\"")+1;
                                             fin=strLinea.lastIndexOf("\"");
                                             aPadre=strLinea.substring(inicio, fin).trim();                                         
-                                        } 
-                                        strLinea=buffer.readLine();
+                                        }   
                                     }                                    
                                 }
                                 if(strLinea.startsWith("<c:Object2")){
@@ -304,8 +301,7 @@ public class Leer {
                                             inicio=strLinea.indexOf("\"")+1;
                                             fin=strLinea.lastIndexOf("\"");
                                             aHijo=strLinea.substring(inicio, fin).trim();                                         
-                                        }
-                                        strLinea=buffer.readLine();
+                                        }   
                                     }                                    
                                 }
                                 LlaveForanea fk = new LlaveForanea(id, nom, tPadre, tHijo, aPadre,aHijo ,onDelete, onUpdate, cardinalidad);
