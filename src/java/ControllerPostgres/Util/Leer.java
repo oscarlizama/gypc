@@ -181,6 +181,7 @@ public class Leer {
                         if(strLinea.equals("</o:Column>")){
                             atributoBD=new AtributoBD(idAtributo,nombreA,tipoA,longitudA,precisionA,mandatorioA, false, false);
                             atributos.add(atributoBD);
+                            mandatorioA=false;
                             //System.out.println("\nidAtributo:"+idAtributo+"\tnombreA:"+nombreA+"\ttipoA:"+tipoA+"\tlongitud:"+longitudA+"\nprecision:"+precisionA+"\tmandatorio:"+mandatorioA+"\tLlave primaria:"+false+"\tunico:"+false);
                         }
                         strLinea=buffer.readLine();
