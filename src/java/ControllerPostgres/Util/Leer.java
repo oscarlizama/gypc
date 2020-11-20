@@ -34,7 +34,7 @@ public class Leer {
         setRuta(archivo);
     }
     
-    public void leerArchivo(){
+    public LecturaBD leerArchivo(){
         //Variables para guardar los atributos de la clase AtributoBD
         String idAtributo="", nombreA="", tipoA="", llavePri="",linea="",linea2="",nombreTabla="",idTabla="";
         int longitudA=0, precisionA=0;
@@ -52,6 +52,7 @@ public class Leer {
         AtributoBD atributoBD;
         //Obajeto de tablas
         Tabla tabla = null;
+        LecturaBD lee;
         
         try{
             File nombreArchivo=new File(ruta);
@@ -101,7 +102,7 @@ public class Leer {
                          }
                      }
                      base=new BD(nombre,cod);
-                     System.out.println("Nombre BD:"+nombre+"\tCod BD:"+cod);
+
                      strLinea=buffer.readLine();
                  }
                  /*OBTENER TABLAS DEL ARCHIVO DE BASE DE DATOS*/
@@ -175,6 +176,7 @@ public class Leer {
                                         mandatorioA=true;
                                     }
                             }
+                            
                         }
                         if(strLinea.equals("</o:Column>")){
                             atributoBD=new AtributoBD(idAtributo,nombreA,tipoA,longitudA,precisionA,mandatorioA, false, false);
@@ -209,12 +211,12 @@ public class Leer {
                     /*FINALIZA LA TABLA Y SE AGREGAN LOS ATRIBUTOS DE ELLA, Y LA TABLA SE AGREGA A LA BASE DE DATOS*/
                     if(strLinea.trim().equals("</o:Table>")){
                         tabla=new Tabla(idTabla, nombreTabla);
-                        tabla.setAtributoBDs((ArrayList<AtributoBD>) atributos);
-                        base.addTabla(tabla);
-                        System.out.println("\nTABLAS: \nidTabla: "+idTabla+"\tnombreTabla: "+nombreTabla);
-                        for(AtributoBD t: tabla.getAtributoBDs()){
-                            System.out.println("\nidAtributo:"+t.getIdAtributoPwD()+"\tnombreA:"+t.getNombreAtributo()+"\ttipoA:"+t.getTipo()+"\tlongitud:"+t.getLongitud()+"\nprecision:"+t.getPrecision()+"\tmandatorio:"+t.isMandatorio()+"\tLlave primaria:"+t.isLlavePrimaria()+"\tunico:"+t.isUnico());
+                        for(AtributoBD atr:atributos){
+                            tabla.addAtributoBD(atr);
                         }
+                        
+                        base.addTabla(tabla);
+                        
                         atributos.clear();
                     }
                     strLinea=buffer.readLine();
@@ -243,12 +245,13 @@ public class Leer {
                                     fin=strLinea.lastIndexOf("<");
                                     cardinalidad=strLinea.substring(inicio, fin).trim();                                 
                                 }
-                                if(strLinea.startsWith("<a:UpdateConstrait")){
+                                if(strLinea.startsWith("<a:UpdateConstraint")){
                                     inicio=strLinea.indexOf(">")+1;
                                     fin=strLinea.lastIndexOf("<");
-                                    onUpdate=strLinea.substring(inicio, fin).trim();                                 
+                                    onUpdate=strLinea.substring(inicio, fin).trim(); 
+                                    
                                 }
-                                if(strLinea.startsWith("<a:DeleteConstrait")){
+                                if(strLinea.startsWith("<a:DeleteConstraint")){
                                     inicio=strLinea.indexOf(">")+1;
                                     fin=strLinea.lastIndexOf("<");
                                     onDelete=strLinea.substring(inicio, fin).trim();                                 
@@ -310,16 +313,19 @@ public class Leer {
                                 }
                                 LlaveForanea fk = new LlaveForanea(id, nom, tPadre, tHijo, aPadre,aHijo ,onDelete, onUpdate, cardinalidad);
                                 base.addLlaveForanea(fk);  
-                                System.out.println("id:"+id+"\tnom:"+nom+"\ttPadre:"+tPadre+"\ttHijo:"+tHijo+"\naPadre:"+aPadre+"\taHijo:"+aHijo+"\tonDelete:"+onDelete+"\tonUpdate:"+onUpdate+"\tcardinalidad:"+cardinalidad);
                             } 
                             strLinea=buffer.readLine();                            
                         }     
+                      
                     }
                 }
+            
         }catch(Exception ex){
             //Excepciones
             System.err.println("Ocurrio un error: "+ex.getMessage());
             ex.printStackTrace();
         }
+        lee=new LecturaBD(base);
+        return lee;
     }
 }
