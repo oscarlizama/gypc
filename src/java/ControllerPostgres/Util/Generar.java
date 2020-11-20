@@ -40,6 +40,36 @@ public class Generar {
             FileOutputStream fichero=new FileOutputStream(file);            
             //Objeto que permite escribir en el archivo
             PrintWriter pw= new PrintWriter(fichero);
+            //Tablas
+            String tablas="";
+            for(Tabla tb: base.getTablas()){
+                tablas+="\nCREATE TABLE "+tb.getNombreTabla()+" (\n";
+                for(AtributoBD atr: tb.getAtributoBDs()){
+                    tablas+="\t"+atr.getNombreAtributo()+"\t"+atr.getTipo()+"\t";
+                    if(atr.isMandatorio()==true){
+                        tablas+="not null";
+                    }
+                    else{
+                        tablas+="null";
+                    }
+                    if(atr.isUnico()==true){ 
+                        tablas+="\tunique,\n";
+                    }
+                    else{
+                        tablas+=",\n";
+                    }
+                    
+                }
+                for(AtributoBD atr: tb.getAtributoBDs()){
+                    if(atr.isLlavePrimaria()==true){
+                        tablas+="\tconstraint PK_"+tb.getNombreTabla()+" primary key ("+atr.getNombreAtributo()+")"; 
+                    }
+                }
+                tablas+="\n);\n\n";
+                
+            }
+            pw.write(tablas+"\n");
+            
             
             //LLaves foraneas
             for(LlaveForanea fk:base.getLlavesForaneas()){
