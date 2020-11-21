@@ -17,7 +17,9 @@ import javax.servlet.http.Part;
 public class ControladorPostgres {
     private Part archivoSubido;
     private String folder;
-
+    private Leer lec1;
+    private Generar archivoGenerado;
+    
     public String getFolder() {
         return folder;
     }
@@ -36,9 +38,13 @@ public class ControladorPostgres {
     public void cargar(){
         try{
             folder = new Scanner(archivoSubido.getInputStream()).useDelimiter("\\A").next();
-            Leer lec1 = new Leer(folder);
+            lec1 = new Leer(folder);
         }catch(IOException e){
             e.printStackTrace();
         }
     }  
+    public void generar(){
+        archivoGenerado = new Generar("C:\\Users\\Ideapad\\Desktop");//DIRECCION DONDE SE GUARDARA ARCHIVO
+        archivoGenerado.generarscript(lec1.leerArchivo());
+    }
 }
