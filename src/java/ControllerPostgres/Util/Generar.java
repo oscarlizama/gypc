@@ -41,7 +41,13 @@ public class Generar {
             //Objeto que permite escribir en el archivo
             PrintWriter pw= new PrintWriter(fichero);
             //Tablas
-            String tablas="";
+            String tablas="",nombreTabla="";
+            
+            for(Tabla tab: base.getTablas()){
+                nombreTabla+="drop table "+tab.getNombreTabla().toUpperCase()+";\n";
+            }
+            pw.write(nombreTabla+"\n");
+            
             
             for(Tabla tb: base.getTablas()){
                 tablas+="\nCREATE TABLE "+tb.getNombreTabla()+" (\n";
