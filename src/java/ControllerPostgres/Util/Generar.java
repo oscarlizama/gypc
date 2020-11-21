@@ -26,8 +26,8 @@ public class Generar {
          setRuta(ruta);
      }
      
-     public void generarscript(BD base){       
-      
+     public void generarscript(LecturaBD lectura){       
+      BD base=lectura.getBaseDeDatos();
       
         try{
             
@@ -42,6 +42,7 @@ public class Generar {
             PrintWriter pw= new PrintWriter(fichero);
             //Tablas
             String tablas="";
+            
             for(Tabla tb: base.getTablas()){
                 tablas+="\nCREATE TABLE "+tb.getNombreTabla()+" (\n";
                 for(AtributoBD atr: tb.getAtributoBDs()){
