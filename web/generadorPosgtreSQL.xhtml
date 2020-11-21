@@ -48,8 +48,10 @@
             </div>
             <div class="container-md" ALIGN="center">
                 <h:form enctype="multipart/form-data">
-                    <h:inputFile value="#{ControladorPostgres.archivoSubido.cargar()}" style="position: absolute; opacity: 0; width: 269px;"/>
-                    <h:commandButton type="button" action="#{controladorPostgres.cargar()}" class="btn btn-light btn-lg" value="Seleccione su archivo(.pdm)"/>
+                    <h:inputFile value="#{controladorPostgres.archivoSubido}"/>
+                    <br/>
+                    <br/>
+                    <h:commandButton type="submit" action="#{controladorPostgres.cargar()}" class="btn btn-light btn-lg" value="Generar código fuente"/>
                     <br/>
                     <br/>
                     <h5 class="text-center" style="color: #ffffff">O arrastre su archivo y suelte aquí</h5>

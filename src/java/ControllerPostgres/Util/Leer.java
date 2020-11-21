@@ -34,7 +34,7 @@ public class Leer {
         setRuta(archivo);
     }
     
-    public LecturaBD leerArchivo(){
+    public static LecturaBD leerArchivo(InputStream inpS){
         //Variables para guardar los atributos de la clase AtributoBD
         String idAtributo="", nombreA="", tipoA="", llavePri="",linea="",linea2="",nombreTabla="",idTabla="";
         int longitudA=0, precisionA=0;
@@ -55,13 +55,14 @@ public class Leer {
         LecturaBD lee;
         
         try{
-            File nombreArchivo=new File(ruta);
+            //File nombreArchivo=new File(ruta);
             //Abrir el archivo
-            FileInputStream fstream = new FileInputStream(nombreArchivo);
+            //FileInputStream fstream = new FileInputStream(nombreArchivo);
             // Creamos el objeto de entrada
-            DataInputStream entrada = new DataInputStream(fstream);
+            //DataInputStream entrada = new DataInputStream(fstream);
             // Creamos el Buffer de Lectura
-            BufferedReader buffer = new BufferedReader(new InputStreamReader(entrada));
+            InputStreamReader isReader = new InputStreamReader(inpS);
+            BufferedReader buffer = new BufferedReader(isReader);
             String strLinea;
             
             //Leer el archivo linea a linea

@@ -26,12 +26,12 @@ public class Generar {
          setRuta(ruta);
      }
      
-     public void generarscript(LecturaBD lectura){       
+     public static File generarscript(LecturaBD lectura){       
       BD base=lectura.getBaseDeDatos();
       
         try{
-            
-            File file= new File(ruta+"\\Script.sql");
+            String rutaL = "";
+            File file= new File("Script.sql");
             //Si el archivo no existe crea uno nuevo
             if(!file.exists()){
                 file.createNewFile();
@@ -67,9 +67,15 @@ public class Generar {
                     }
                     
                 }
+                int conPK = 1;
                 for(AtributoBD atr: tb.getAtributoBDs()){
                     if(atr.isLlavePrimaria()==true){
-                        tablas+="\tconstraint PK_"+tb.getNombreTabla()+" primary key ("+atr.getNombreAtributo()+")"; 
+                        if (conPK > 1){
+                            tablas+=",\n\tconstraint PK_"+tb.getNombreTabla()+" primary key ("+atr.getNombreAtributo()+")"; 
+                        }else{
+                            tablas+="\tconstraint PK_"+tb.getNombreTabla()+" primary key ("+atr.getNombreAtributo()+")";                             
+                        }   
+                        conPK++;
                     }
                 }
                 tablas+="\n);\n\n";
@@ -123,9 +129,11 @@ public class Generar {
                 
             }
             fichero.close();
+            return file;
         }catch(IOException e){
            e.printStackTrace();
         }
+        return null;
      }
     
 }
