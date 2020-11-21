@@ -7,6 +7,7 @@ package ControllerPython;
 
 import ControllerPython.Util.*;
 import ControllerPython.Modelo.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -25,17 +26,28 @@ public class ControladorPython {
     private Part file;
     private String fileContent;
     
-    public static void main(String[] args){
-
-        
-    }
-    
     public void uploat(){
         try{
             fileContent = new Scanner(file.getInputStream()).useDelimiter("\\A").next();
             Leer lec1 = new Leer(fileContent);
         }catch(IOException e){
             e.printStackTrace();
+        }
+    }
+    public void guardar(){
+        String usu = System.getProperty("user.name");     
+        String ruta="C:\\Users\\";
+        String rutaCompleta=ruta+usu+"\\Documents\\GeneradoPython";
+        File directorio = new File(rutaCompleta);
+        
+        if (!directorio.exists()) {
+            directorio.mkdir(); 
+            Generar nuevo = new Generar(rutaCompleta);
+            nuevo.Escribiendo();
+
+        }else{
+            Generar nuevo = new Generar(rutaCompleta);
+            nuevo.Escribiendo();
         }
     }
 

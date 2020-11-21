@@ -48,7 +48,7 @@ public class Leer {
         setRuta(archivo);
     }
     public void LeerArchivo(){
-        String id = null,nombre = null ,visi=null;
+        String id = null,nombre = null ,visi=null , general=null;
         boolean abs = false;
         String datos= null, nombreR=null,mult=null, mult2=null, visiR=null;
         boolean estR=false;
@@ -189,6 +189,16 @@ public class Leer {
                                                 tipo=matcher8.group(1);
                                             }
                                         }else{
+                                            if(data.startsWith("<generalization")){
+                                                Pattern pattern20 = Pattern.compile("general=\"(.*?)\"");
+                                                Matcher matcher20 = pattern20.matcher(data);
+                                                if(matcher20.find()) {
+                                                            general=matcher20.group(1);
+                                                            //System.out.println("nombreOperacion " + matcher5.group(1));
+                                                }else{
+                                                    general="";
+                                                }
+                                            }else{
                                                 if(data.startsWith("<defaultValue")){
                                                     Pattern pattern9 = Pattern.compile("value=\"(.*?)\"");
                                                     Matcher matcher9 = pattern9.matcher(data);
@@ -251,6 +261,8 @@ public class Leer {
                                                         //System.out.println(data);
                                                     }
                                                 }
+                                            }
+                                                
                                                 
                                             }
                                             

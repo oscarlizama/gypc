@@ -16,6 +16,7 @@ public class Clase { //Identificado por ' xmi:type="uml:Class" ' y el inicio de 
     private String nombreClase;
     private String visibilidad; //Opciones: public, private, protected, package
     private boolean Abstracto;
+    private String generalizacion;
     //Variables de relaciones
     private ArrayList<Atributo> atributos = new ArrayList<>();
     private ArrayList<Metodo> metodos = new ArrayList<>();
@@ -110,4 +111,14 @@ public class Clase { //Identificado por ' xmi:type="uml:Class" ' y el inicio de 
         AtributoRelacion a = new AtributoRelacion(nombreAtributo, visibilidad, nombreClase, estatico);
         this.atributosDeRelaciones.add(a);
     }
+
+    public String getGeneralizacion() {
+        return generalizacion;
+    }
+
+    public void setGeneralizacion(String generalizacion) {
+        this.generalizacion = generalizacion;
+    }
+    
+    
 }
