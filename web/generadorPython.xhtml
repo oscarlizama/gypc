@@ -47,8 +47,10 @@
             <br/>
             <div class="container-md" align="center">
                 <h:form enctype="multipart/form-data">
-                    <h:inputFile value="#{ControladorPython.file.uploat()}" style="position: absolute; opacity: 0; width: 269px; height: 47px" />
-                    <h:commandButton type="button" action="#{controladorPython.uploat()}" class="btn btn-light btn-lg" value="Seleccione su archivo(.xmi)"/>
+                    <h:inputFile value="#{controladorPython.file}"/>
+                    <br/>
+                    <br/>
+                    <h:commandButton type="submit" action="#{controladorPython.uploat()}" class="btn btn-light btn-lg" value="Seleccione su archivo(.xmi)"/>
                 <br/>
                 <br/>
                 <h5 class="text-center" style="color: #ffffff">O arrastre su archivo y suelte aquí</h5>

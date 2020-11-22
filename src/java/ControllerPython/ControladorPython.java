@@ -30,6 +30,8 @@ public class ControladorPython {
         try{
             fileContent = new Scanner(file.getInputStream()).useDelimiter("\\A").next();
             Leer lec1 = new Leer(fileContent);
+            LecturaUML lcU = lec1.LeerArchivo();
+            Validar.imprimirClases(lcU);
         }catch(IOException e){
             e.printStackTrace();
         }

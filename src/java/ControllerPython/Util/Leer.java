@@ -34,7 +34,7 @@ public class Leer {
     List<Clase> listaClases = new ArrayList<Clase>();
     Atributo atributo;
     Metodo metodo;
-
+    List<Parametro> listaParams = new ArrayList<Parametro>();
  
     public String getRuta() {
         return ruta;
@@ -47,7 +47,8 @@ public class Leer {
     public Leer(String archivo){
         setRuta(archivo);
     }
-    public void LeerArchivo(){
+    public LecturaUML LeerArchivo(){
+        LecturaUML lecU = new LecturaUML();
         String id = null,nombre = null ,visi=null , general=null;
         boolean abs = false;
         String datos= null, nombreR=null,mult=null, mult2=null, visiR=null;
@@ -57,13 +58,13 @@ public class Leer {
         ArrayList<String> upper=new ArrayList<String>();
         
         String nombreA=null,visiA=null,tipo=null, val=null;
-        boolean estA= false;
+        boolean estA= false; boolean aggAttr = false; int staType = 0;
         String nombreM=null,visiM=null,estM=null, reto=null;
         String nombreP=null,tipoP=null;
         
-        try {
-            File myObj = new File(ruta);
-            Scanner myReader = new Scanner(myObj);
+        try {            
+            //File myObj = new File(ruta);
+            Scanner myReader = new Scanner(ruta);
             while (myReader.hasNextLine()) {   
                 String data = myReader.nextLine().trim();
                 if(data.startsWith("<packagedElement") && data.contains("xmi:type=\"uml:Class\"")){
@@ -95,7 +96,8 @@ public class Leer {
                         }
                         //System.out.println("esAbstracta: " + abs);
                     }
-                    listaClases.add(new Clase(id,nombre,visi,abs));
+                    Clase clasC = new Clase(id,nombre,visi,abs);
+                    //listaClases.add(new Clase(id,nombre,visi,abs));
                     
                     //Verificando caso especial de cierre en la misma linea
                     boolean ignorarWhile = false;
@@ -156,14 +158,19 @@ public class Leer {
                                         }
                                         
                                     }else{
-                                        Relacion relacion = new Relacion(type.get(0),type.get(1),nombreR,lower.get(0),upper.get(0),lower.get(1),upper.get(1),visiR,estR);
-                                        type.clear();
-                                        lower.clear();
-                                        upper.clear();
+                                        if (type.size() > 1 && lower.size() > 1 && upper.size() > 1 ){
+                                            Relacion relacion = new Relacion(type.get(0),type.get(1),nombreR,lower.get(0),upper.get(0),lower.get(1),upper.get(1),visiR,estR);
+                                            //System.out.println(relacion);
+                                            type.clear();
+                                            lower.clear();
+                                            upper.clear();
+                                            lecU.addRelaciones(relacion);   //Agregando relación a Lectura (G_e)                                            
+                                        }                                        
                                         if(data.startsWith("<ownedAttribute")){
                                             //buscar atributo
                                             Pattern pattern4 = Pattern.compile(" name=\"(.*?)\" ");
                                             Matcher matcher4 = pattern4.matcher(data);
+                                            aggAttr = true;
                                             if(matcher4.find()) {
                                                 nombreA=matcher4.group(1);
                                                 //System.out.println("nombreAtributo " + matcher4.group(1));
@@ -171,7 +178,7 @@ public class Leer {
                                             Pattern pattern6 = Pattern.compile(" visibility=\"(.*?)\" ");
                                             Matcher matcher6 = pattern6.matcher(data);
                                             if(matcher6.find()) {
-                                                System.out.println("visibilidad " + matcher6.group(1));
+                                                //System.out.println("visibilidad " + matcher6.group(1));
                                                 visiA=matcher6.group(1);
                                             }
                                             Pattern pattern7 = Pattern.compile("isStatic=\"(.*?)\" ");
@@ -187,13 +194,15 @@ public class Leer {
                                             if(matcher8.find()) {
                                                 //System.out.println("tipo " + matcher8.group(1));
                                                 tipo=matcher8.group(1);
+                                                staType = 1;
                                             }
-                                        }else{
+                                        }else{  //GENERALIZACION G_e
                                             if(data.startsWith("<generalization")){
                                                 Pattern pattern20 = Pattern.compile("general=\"(.*?)\"");
                                                 Matcher matcher20 = pattern20.matcher(data);
                                                 if(matcher20.find()) {
                                                             general=matcher20.group(1);
+                                                            clasC.setGeneralizacion(general);
                                                             //System.out.println("nombreOperacion " + matcher5.group(1));
                                                 }else{
                                                     general="";
@@ -206,8 +215,17 @@ public class Leer {
                                                         val= matcher9.group(1);
                                                         //System.out.println("valor por defecto: " + val);
                                                     }
-                                                    clase.addAtributo(nombreA,visiA,estA,tipo,val);
-                                                }else{
+                                                    clasC.addAtributo(nombreA,visiA,estA,tipo,val); // G_e
+                                                    aggAttr = false;
+                                                }else{                                                                     
+                                                    if (aggAttr == true && staType == 2){
+                                                        clasC.addAtributo(nombreA,visiA,estA,tipo,""); // G_e
+                                                        aggAttr = false;
+                                                        staType = 0;
+                                                    }
+                                                    if (staType == 1){
+                                                        staType = 2;
+                                                    }
                                                     if(data.startsWith("<ownedOperation")){
                                                         //buscar operacion
                                                         Pattern pattern5 = Pattern.compile(" name=\"(.*?)\" ");
@@ -253,10 +271,15 @@ public class Leer {
                                                                 }   
                                                             }
                                                             Parametro pa1 = new Parametro(nombreP,tipoP);
-                                                            metodo.addParametro(pa1);
+                                                            listaParams.add(pa1);
                                                                 // La etiqueta comienza con otra cosa
                                                         }
-                                                        clase.addMetodo(nombreM, visiA, estM, reto);
+                                                        metodo = new Metodo(nombreM, visiA, estM, reto);
+                                                        for (Parametro p:listaParams){
+                                                            metodo.addParametro(p);
+                                                        }
+                                                        //clasC.addMetodo(metodo); //G_e                                                        
+                                                        listaParams.clear();
                                                         // La etiqueta comienza con otra cosa
                                                         //System.out.println(data);
                                                     }
@@ -276,14 +299,19 @@ public class Leer {
                         data = myReader.nextLine().trim();
                     }  
                     //System.out.println("Saliendo a clase------");
-                }        
+                    //Final while
+                    //listaClases.add(clasC);
+                    lecU.addClases(clasC);
+                }
+                //Final clase
                 //System.out.println(data);
-            }
+            } //Final final
             myReader.close();
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
+        return lecU;
     }
   
 }
