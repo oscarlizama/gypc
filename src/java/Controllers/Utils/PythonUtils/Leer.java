@@ -3,9 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ControllerPython.Util;
+package Controllers.Utils.PythonUtils;
 
-import ControllerPython.Modelo.*;
+import Models.PythonModels.LecturaUML;
+import Models.PythonModels.Parametro;
+import Models.PythonModels.Relacion;
+import Models.PythonModels.Metodo;
+import Models.PythonModels.Clase;
+import Models.PythonModels.Atributo;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,7 +25,7 @@ import java.util.regex.Pattern;
  *
  * @author ADMIN
  */
-public class LeerAlt {
+public class Leer {
     
     
     //Definición de métodos
@@ -287,7 +292,7 @@ public class LeerAlt {
                 
             }
         } catch (Exception ex) {
-            Logger.getLogger(LeerAlt.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Leer.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return lec;

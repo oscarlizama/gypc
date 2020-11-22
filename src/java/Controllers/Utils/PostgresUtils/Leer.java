@@ -3,8 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ControllerPostgres.Util;
-import ControllerPostgres.Modelo.*;
+package Controllers.Utils.PostgresUtils;
+import Models.PostgresModels.BD;
+import Models.PostgresModels.AtributoBD;
+import Models.PostgresModels.LecturaBD;
+import Models.PostgresModels.LlaveForanea;
+import Models.PostgresModels.Tabla;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;

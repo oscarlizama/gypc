@@ -3,14 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ControllerPostgres;
+package Controllers.ControllerPython;
 
-import ControllerPostgres.Modelo.*;
-import ControllerPostgres.Util.*;
+import Controllers.Utils.PythonUtils.Validar;
+import Controllers.Utils.PythonUtils.Leer;
+import Controllers.Utils.PythonUtils.Generar;
+import Models.PythonModels.LecturaUML;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Scanner;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
@@ -18,45 +21,34 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 
+
+/**
+ *
+ * @author ADMIN
+ */
 @ManagedBean
-public class ControladorPostgres {
-    private Part archivoSubido;
-    private String folder;
-    private Leer lec1;
-    private Generar archivoGenerado;
-    
-    public String getFolder() {
-        return folder;
-    }
+public class ControladorPython {
 
-    public void setFolder(String folder) {
-        this.folder = folder;
-    }
+    private Part file;
+    private String fileContent;
     
-    public Part getArchivoSubido() {
-        return archivoSubido;
-    }
-
-    public void setArchivoSubido(Part archivoSubido) {
-        this.archivoSubido = archivoSubido;
-    }
-    
-    public void cargar(){
-        try{            
-            LecturaBD lbd = Leer.leerArchivo(archivoSubido.getInputStream());
-            System.out.println("LecturaRealizada");
-            System.out.println();
-            File archivo = Generar.generarscript(lbd);   
-            descargar(archivo);
-        }catch(Exception e){ 
+    public void uploat(){
+        try{
+            LecturaUML lcU = Leer.leerArchivo(file.getInputStream());
+            LecturaUML lcUval = Validar.validar(lcU);
+            //Validar.imprimirClases(lcUval);
+            File adesc = Generar.Escribiendo(lcUval);
+            descargar(adesc);
+        }catch(IOException e){
             e.printStackTrace();
         }
-    }  
+    }
+
     
     public void descargar(File file){
         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();  
 
-        response.setHeader("Content-Disposition", "attachment;filename=Script.sql");  
+        response.setHeader("Content-Disposition", "attachment;filename=archivo.py");  
         response.setContentLength((int) file.length());  
         ServletOutputStream out = null;  
         try {  
@@ -81,8 +73,25 @@ public class ControladorPostgres {
             }    
         }
     }
-//    public File generar(){
-//        archivoGenerado = new Generar("C:\\Users\\Ideapad\\Desktop");//DIRECCION DONDE SE GUARDARA ARCHIVO
-//        return archivoGenerado.generarscript(lec1.leerArchivo());
-//    }
+    
+    public Part getFile() {
+        return file;
+    }
+
+    public void setFile(Part file) {
+        this.file = file;
+    }
+
+    public String getFileContent() {
+        return fileContent;
+    }
+
+    public void setFileContent(String fileContent) {
+        this.fileContent = fileContent;
+    }
+  
+    
+    
+    
+    
 }

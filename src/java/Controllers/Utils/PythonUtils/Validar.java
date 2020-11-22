@@ -3,9 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ControllerPython.Util;
+package Controllers.Utils.PythonUtils;
 
-import ControllerPython.Modelo.*;
+import Models.PythonModels.LecturaUML;
+import Models.PythonModels.Parametro;
+import Models.PythonModels.Relacion;
+import Models.PythonModels.Metodo;
+import Models.PythonModels.Clase;
+import Models.PythonModels.AtributoRelacion;
+import Models.PythonModels.Atributo;
 import java.util.ArrayList;
 
 /**
