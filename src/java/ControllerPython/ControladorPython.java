@@ -35,27 +35,13 @@ public class ControladorPython {
             LecturaUML lcU = LeerAlt.leerArchivo(file.getInputStream());
             LecturaUML lcUval = Validar.validar(lcU);
             //Validar.imprimirClases(lcUval);
-            descargar(Generar.Escribiendo(lcUval));
+            File adesc = Generar.Escribiendo(lcUval);
+            descargar(adesc);
         }catch(IOException e){
             e.printStackTrace();
         }
     }
-//    public void guardar(){
-//        String usu = System.getProperty("user.name");     
-//        String ruta="C:\\Users\\";
-//        String rutaCompleta=ruta+usu+"\\Documents\\GeneradoPython";
-//        File directorio = new File(rutaCompleta);
-//        
-//        if (!directorio.exists()) {
-//            directorio.mkdir(); 
-//            Generar nuevo = new Generar(rutaCompleta);
-//            nuevo.Escribiendo();
-//
-//        }else{
-//            Generar nuevo = new Generar(rutaCompleta);
-//            nuevo.Escribiendo();
-//        }
-//    }
+
     
     public void descargar(File file){
         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();  

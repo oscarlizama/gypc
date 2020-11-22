@@ -47,7 +47,7 @@ public class Generar {
                 //clases 
                 Iterable<Clase> clases = lec.getClases();
                 for(Clase c: clases){
-                    if(c.getGeneralizacion() != ""){
+                    if(c.getGeneralizacion() != "" && c.getGeneralizacion() != null){
                         linea.write("class "+ c.getNombreClase()+"("+c.getGeneralizacion()+"):\n");
                     }else{
                         linea.write("class "+ c.getNombreClase()+"():\n");
@@ -56,17 +56,29 @@ public class Generar {
                     Iterable<Atributo> atributos = c.getAtributos();
                     for(Atributo a: atributos){
                         if(a.isEstatico()==true){
-                            linea.write("\t"+a.getNombreAtributo()+" = None\n");
-                        }
+                            if(a.getVisibilidad().equals("public")){
+                            linea.write("\t"+a.getNombreAtributo());
+                            }else{
+                                if(a.getVisibilidad().equals("protected")){
+                                    linea.write("\t_"+a.getNombreAtributo());
+                                }else{
+                                    if(a.getVisibilidad().equals("private")){
+                                    linea.write("\t__"+a.getNombreAtributo());
+                            }
+                                }
+                            }
+                            if (a.getValorPorDefecto() != "" && a.getValorPorDefecto() != null){
+                            linea.write(" = \"" + a.getValorPorDefecto() + "\"\n");
+                            }else{linea.write(" = None\n");}
+                        }                        
                     }
                     //constructor
                     linea.write("\tdef __init__(self");
-                    if(c.getGeneralizacion() != ""){
+                    if(c.getGeneralizacion() != "" && c.getGeneralizacion() != null){
                         //atributos padre
                         Clase padre = null;
-                        for(Clase c2:clases){
+                        for(Clase c2:clases){                            
                             if(c2.getNombreClase()==c.getGeneralizacion())
-                                System.out.println("Comparando" + c2.getNombreClase() + " con " + c.getGeneralizacion());
                                 padre=c2;
                         }
                         for(Atributo ap:padre.getAtributos()){
@@ -83,14 +95,15 @@ public class Generar {
                     }
                     for(Atributo a:atributos){
                         if(a.isEstatico()==false){
-                            if(a.getValorPorDefecto() != ""){
-                                linea.write(", "+a.getNombreAtributo()+" = "+a.getValorPorDefecto());
+                            if(a.getValorPorDefecto() != "" && a.getValorPorDefecto() != null){
+                                linea.write(", "+a.getNombreAtributo()+" = \""+a.getValorPorDefecto() + "\"");
                             }else{
                                 linea.write(", "+a.getNombreAtributo()+"= None ");
                             }
                         }
                     }
                     linea.write("):\n");
+                    //Contenido init
                     if(c.getGeneralizacion()!= "" && c.getGeneralizacion() != null){
                         //constructor de padre
                         linea.write("\t\t"+c.getGeneralizacion()+".__init__(self");
@@ -112,60 +125,63 @@ public class Generar {
                     }
                     //visibilidad de los atributos
                     for(Atributo a: atributos){
-                        if(a.getVisibilidad()=="public"){
+                        if(a.getVisibilidad().equals("public")){
                             linea.write("\t\tself."+a.getNombreAtributo()+" = "+a.getNombreAtributo()+"\n");
                         }else{
-                            if(a.getVisibilidad()=="protected"){
+                            if(a.getVisibilidad().equals("protected")){
                                 linea.write("\t\tself._"+a.getNombreAtributo()+" = "+a.getNombreAtributo()+"\n");
                             }else{
-                                if(a.getVisibilidad()=="private"){
+                                if(a.getVisibilidad().equals("private")){
                                 linea.write("\t\tself.__"+a.getNombreAtributo()+" = "+a.getNombreAtributo()+"\n");
                         }
                             }
                         }
                     }
+                    
                     Iterable<Metodo> metodos = c.getMetodos();
                     for(Metodo m: metodos){
-                        if(m.getEstatico()=="true"){
+                        if(m.getEstatico().equals("true")){
                             linea.write("\t@staticmethod\n");
-                            if(m.getVisibilidad()=="public"){
-                                linea.write("\tdef."+m.getNombreMetodo()+"(");
+                            if(m.getVisibilidad().equals("public")){
+                                linea.write("\tdef "+m.getNombreMetodo()+"(");
                             }else{
-                                if(m.getVisibilidad()=="protected"){
-                                    linea.write("\tdef._"+m.getNombreMetodo()+"(");
+                                if(m.getVisibilidad().equals("protected")){
+                                    linea.write("\tdef _"+m.getNombreMetodo()+"(");
                                 }else{
-                                    if(m.getVisibilidad()=="private"){
-                                        linea.write("\tdef.__"+m.getNombreMetodo()+"(");
+                                    if(m.getVisibilidad().equals("private")){
+                                        linea.write("\tdef __"+m.getNombreMetodo()+"(");
                                     }
                                 }
                             }
                             //parametros si es estatico
                             Iterable<Parametro> parametros = m.getParametros();
+                            boolean primParEst = true;
                             for(Parametro pa: parametros){
-
-                                linea.write(pa.getNombreParametro());
-                                if(parametros.iterator().hasNext()){
-                                    linea.write(","+pa.getNombreParametro());
+                                if (primParEst){
+                                    linea.write(pa.getNombreParametro()); //Primer parámetro
+                                    primParEst = false;
+                                }else{
+                                    linea.write(","+pa.getNombreParametro()); //Segundo y más parametros
                                 }
+                                
                             }
                             linea.write("):\n");
                             
                         }else{
-                            if(m.getVisibilidad()=="public"){
-                                linea.write("\tdef."+m.getNombreMetodo()+"(self");
+                            if(m.getVisibilidad().equals("public")){
+                                linea.write("\tdef "+m.getNombreMetodo()+"(self");
                             }else{
-                                if(m.getVisibilidad()=="protected"){
-                                    linea.write("\tdef._"+m.getNombreMetodo()+"(self");
+                                if(m.getVisibilidad().equals("protected")){
+                                    linea.write("\tdef _"+m.getNombreMetodo()+"(self");
                                 }else{
-                                    if(m.getVisibilidad()=="private"){
-                                        linea.write("\tdef.__"+m.getNombreMetodo()+"(self");
+                                    if(m.getVisibilidad().equals("private")){
+                                        linea.write("\tdef __"+m.getNombreMetodo()+"(self");
                                     }
                                 }
                             }
                             //parametros
                             Iterable<Parametro> parametros = m.getParametros();
                             for(Parametro pa: parametros){
-
                                 linea.write(","+pa.getNombreParametro()); 
                             }
                             linea.write("):\n");
@@ -175,23 +191,19 @@ public class Generar {
                         if(m.getRetornaTipo()=="int"){
                             linea.write("\t\treturn 0\n");
                         }else{
-                            if(m.getRetornaTipo()=="String"){
+                            if(m.getRetornaTipo()=="String_id"){
                                 linea.write("\t\treturn \"\" \n");
                             }else{
                                 if(m.getRetornaTipo()=="null"){
                                     linea.write("\t\tpass\n");
                                 }
+                                else{linea.write("\t\treturn None\n");}
                             }
                         }
                     }
-                    
-                    
+                    linea.write("\n");
                 }
-                
-                //linea.write("nueva linea3");
                 linea.flush();
-                //linea.close();
-                //System.out.println("linea agregada...");
                 return archivo;            
         } catch (IOException ex) {
             ex.printStackTrace();

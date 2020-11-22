@@ -95,7 +95,7 @@ public class LeerAlt {
                             pattern = Pattern.compile("isStatic=\"(.*?)\" ");
                             matcher = pattern.matcher(data);
                             while(matcher.find()) {
-                                if(matcher.group(1)=="true"){
+                                if(matcher.group(1).equals("true")){
                                     attr.setEstatico(true);
                                 }else{attr.setEstatico(false);}
                             }

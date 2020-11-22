@@ -77,6 +77,7 @@ public class Validar {
                 atrib += " NombreAtributo " + a.getNombreAtributo();
                 atrib += " Visibilidad Attr " +a.getVisibilidad();
                 atrib += " ValorDefecto " +a.getValorPorDefecto();
+                atrib += " Estatico: " + a.isEstatico();
                 atrib += " TipoAttr " +a.getTipo();
                 System.out.println(atrib);
             }
