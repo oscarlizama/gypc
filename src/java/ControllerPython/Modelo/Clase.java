@@ -21,7 +21,9 @@ public class Clase { //Identificado por ' xmi:type="uml:Class" ' y el inicio de 
     private ArrayList<Atributo> atributos = new ArrayList<>();
     private ArrayList<Metodo> metodos = new ArrayList<>();
     private ArrayList<AtributoRelacion> atributosDeRelaciones = new ArrayList<>();
-
+    
+    public Clase(){}
+    
     public Clase(String idClaseStarUML, String nombreClase, String visibilidad, boolean Abstracto) {
         this.idClaseStarUML = idClaseStarUML;
         this.nombreClase = nombreClase;

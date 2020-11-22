@@ -14,7 +14,9 @@ public class AtributoRelacion {
     private String visibilidad;
     private String nombreClase;
     private boolean estatico;
-
+    
+    public AtributoRelacion(){}
+    
     public AtributoRelacion(String nombreAtributo, String visibilidad, String nombreClase, boolean estatico) {
         this.nombreAtributo = nombreAtributo;
         this.visibilidad = visibilidad;

@@ -170,10 +170,8 @@ public class Leer {
                                             //buscar atributo
                                             Pattern pattern4 = Pattern.compile(" name=\"(.*?)\" ");
                                             Matcher matcher4 = pattern4.matcher(data);
-                                            aggAttr = true;
                                             if(matcher4.find()) {
                                                 nombreA=matcher4.group(1);
-                                                //System.out.println("nombreAtributo " + matcher4.group(1));
                                             }
                                             Pattern pattern6 = Pattern.compile(" visibility=\"(.*?)\" ");
                                             Matcher matcher6 = pattern6.matcher(data);
@@ -187,7 +185,6 @@ public class Leer {
                                                 if(matcher7.group(1)=="true"){
                                                     estA = true;
                                                 }
-                                                //System.out.println("Estatico: " + estA);
                                             }  
                                             Pattern pattern8 = Pattern.compile(" type=\"(.*?)\" ");
                                             Matcher matcher8 = pattern8.matcher(data);
@@ -232,7 +229,6 @@ public class Leer {
                                                         Matcher matcher5 = pattern5.matcher(data);
                                                         if(matcher5.find()) {
                                                             nombreM=matcher5.group(1);
-                                                            //System.out.println("nombreOperacion " + matcher5.group(1));
                                                         }
                                                         Pattern pattern10 = Pattern.compile(" visibility=\"(.*?)\" ");
                                                         Matcher matcher10 = pattern10.matcher(data);
@@ -246,13 +242,14 @@ public class Leer {
                                                             estM =matcher11.group(1);
                                                             //System.out.println("es estatico: " + estM);
                                                         }
-                                                        //clase.addMetodo(nombreM, visiA, estM, reto);
+                                                        metodo = new Metodo(nombreM, visiA, estM, "");
                                                     }else{
                                                         if(data.startsWith("<ownedParameter")){
                                                             Pattern pattern12 = Pattern.compile(" direction=\"(.*?)\" ");
                                                             Matcher matcher12 = pattern12.matcher(data);
                                                             if(matcher12.find()) {
                                                                 reto= matcher12.group(1);
+                                                                metodo.setRetornaTipo(reto);
                                                                 //System.out.println("retorna tipo " + matcher12.group(1));
                                                             }
                                                         }else{
@@ -274,11 +271,11 @@ public class Leer {
                                                             listaParams.add(pa1);
                                                                 // La etiqueta comienza con otra cosa
                                                         }
-                                                        metodo = new Metodo(nombreM, visiA, estM, reto);
+                                                        
                                                         for (Parametro p:listaParams){
                                                             metodo.addParametro(p);
                                                         }
-                                                        //clasC.addMetodo(metodo); //G_e                                                        
+                                                        clasC.addMetodo(metodo); //G_e                                                        
                                                         listaParams.clear();
                                                         // La etiqueta comienza con otra cosa
                                                         //System.out.println(data);

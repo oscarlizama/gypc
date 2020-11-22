@@ -7,8 +7,10 @@ package ControllerPython.Util;
 
 import ControllerPython.Modelo.*;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  *
@@ -30,19 +32,20 @@ public class Generar {
         setRuta(directorio);
     }
     
-    public void Escribiendo() {
-        
-        
- 
+    public static File Escribiendo(LecturaUML lec) {
         try{
-            File archivo= new File(ruta+"\\archivo.py");
+            File archivo= new File("archivo1.py");
             if(!archivo.exists()){
                 archivo.createNewFile();
                 //System.out.println("Creacion de archivo: " + archivo.getName());
             }
-            FileWriter linea= new FileWriter(archivo.getAbsoluteFile(), true);
+            //FileWriter linea= new FileWriter(archivo.getAbsoluteFile(), true);
+            //Se prepara el stream
+            FileOutputStream fichero=new FileOutputStream(archivo);            
+            //Objeto que permite escribir en el archivo
+            PrintWriter linea= new PrintWriter(fichero);
                 //clases 
-                Iterable<Clase> clases = null;
+                Iterable<Clase> clases = lec.getClases();
                 for(Clase c: clases){
                     if(c.getGeneralizacion() != ""){
                         linea.write("class "+ c.getNombreClase()+"("+c.getGeneralizacion()+"):\n");
@@ -50,7 +53,7 @@ public class Generar {
                         linea.write("class "+ c.getNombreClase()+"():\n");
                     }
                     //atributos
-                    Iterable<Atributo> atributos = null;
+                    Iterable<Atributo> atributos = c.getAtributos();
                     for(Atributo a: atributos){
                         if(a.isEstatico()==true){
                             linea.write("\t"+a.getNombreAtributo()+" = None\n");
@@ -63,6 +66,7 @@ public class Generar {
                         Clase padre = null;
                         for(Clase c2:clases){
                             if(c2.getNombreClase()==c.getGeneralizacion())
+                                System.out.println("Comparando" + c2.getNombreClase() + " con " + c.getGeneralizacion());
                                 padre=c2;
                         }
                         for(Atributo ap:padre.getAtributos()){
@@ -73,7 +77,7 @@ public class Generar {
                         }
                         
                     }
-                    Iterable<AtributoRelacion> aRelaciones = null;
+                    Iterable<AtributoRelacion> aRelaciones = c.getAtributosDeRelaciones();
                     for(AtributoRelacion ar: aRelaciones){
                         linea.write(", "+ar.getNombreAtributo());
                     }
@@ -87,14 +91,15 @@ public class Generar {
                         }
                     }
                     linea.write("):\n");
-                    if(c.getGeneralizacion()!=""){
+                    if(c.getGeneralizacion()!= "" && c.getGeneralizacion() != null){
                         //constructor de padre
                         linea.write("\t\t"+c.getGeneralizacion()+".__init__(self");
                         //atributos del padre
                         Clase padre = null;
                         for(Clase c2:clases){
-                            if(c2.getNombreClase()==c.getGeneralizacion())
-                                padre=c2;
+                            if(c2.getNombreClase()==c.getGeneralizacion()){
+                                padre=c2;                                
+                            }
                         }
                         for(Atributo ap:padre.getAtributos()){
                             linea.write(", "+ap.getNombreAtributo());
@@ -119,7 +124,7 @@ public class Generar {
                             }
                         }
                     }
-                    Iterable<Metodo> metodos = null;
+                    Iterable<Metodo> metodos = c.getMetodos();
                     for(Metodo m: metodos){
                         if(m.getEstatico()=="true"){
                             linea.write("\t@staticmethod\n");
@@ -135,7 +140,7 @@ public class Generar {
                                 }
                             }
                             //parametros si es estatico
-                            Iterable<Parametro> parametros = null;
+                            Iterable<Parametro> parametros = m.getParametros();
                             for(Parametro pa: parametros){
 
                                 linea.write(pa.getNombreParametro());
@@ -158,7 +163,7 @@ public class Generar {
                                 }
                             }
                             //parametros
-                            Iterable<Parametro> parametros = null;
+                            Iterable<Parametro> parametros = m.getParametros();
                             for(Parametro pa: parametros){
 
                                 linea.write(","+pa.getNombreParametro()); 
@@ -184,13 +189,14 @@ public class Generar {
                 }
                 
                 //linea.write("nueva linea3");
-                linea.close();
+                linea.flush();
+                //linea.close();
                 //System.out.println("linea agregada...");
-            
+                return archivo;            
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        
+        return null;
     }
     
 }

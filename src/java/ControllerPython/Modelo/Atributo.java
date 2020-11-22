@@ -15,7 +15,9 @@ public class Atributo { //Identificado por ' xmi:type="uml:Property" ' y el inic
     private boolean Estatico; // static
     private String tipo; //Opciones: int, String, Date, boolean, float, char
     private String valorPorDefecto; //Identificado por la etiqueta de inicio '<defaultValue', dentro de un Atributo
-
+    
+    public Atributo(){}
+    
     public Atributo(String nombreAtributo, String visibilidad, boolean Estatico, String tipo, String valorPorDefecto) {
         this.nombreAtributo = nombreAtributo;
         this.visibilidad = visibilidad;

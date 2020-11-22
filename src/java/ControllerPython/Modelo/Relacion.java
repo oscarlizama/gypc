@@ -20,8 +20,11 @@ public class Relacion {
     private String multBajaDestino;
     private String multAltaDestino;
     private String visibilidad;
+    private String tipoRel;
     private boolean estatico;
-
+    
+    public Relacion(){}
+    
     public Relacion(String claseOrigen, String claseDestino, String nombreRelacion, String multBajaOrigen, String multAltaOrigen, String multBajaDestino, String multAltaDestino, String visibilidad, boolean estatico) {
         this.claseOrigen = claseOrigen;
         this.claseDestino = claseDestino;
@@ -33,6 +36,14 @@ public class Relacion {
         this.visibilidad = visibilidad;
         this.estatico = estatico;
     }
+    
+    public String getTipoRel() {
+        return tipoRel;
+    }
+
+    public void setTipoRel(String tipoRel) {
+        this.tipoRel = tipoRel;
+    }    
     
     public void transformarClases(ArrayList<Clase> clases){
         //Metodo que toma el parametro this.claseOrigen y this.claseDestino, las lee y sustituye por el nombreClase

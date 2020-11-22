@@ -8,10 +8,14 @@ package ControllerPython;
 import ControllerPython.Util.*;
 import ControllerPython.Modelo.*;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Scanner;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 
@@ -28,31 +32,60 @@ public class ControladorPython {
     
     public void uploat(){
         try{
-            fileContent = new Scanner(file.getInputStream()).useDelimiter("\\A").next();
-            Leer lec1 = new Leer(fileContent);
-            LecturaUML lcU = lec1.LeerArchivo();
-            Validar.imprimirClases(lcU);
+            LecturaUML lcU = LeerAlt.leerArchivo(file.getInputStream());
+            LecturaUML lcUval = Validar.validar(lcU);
+            //Validar.imprimirClases(lcUval);
+            descargar(Generar.Escribiendo(lcUval));
         }catch(IOException e){
             e.printStackTrace();
         }
     }
-    public void guardar(){
-        String usu = System.getProperty("user.name");     
-        String ruta="C:\\Users\\";
-        String rutaCompleta=ruta+usu+"\\Documents\\GeneradoPython";
-        File directorio = new File(rutaCompleta);
-        
-        if (!directorio.exists()) {
-            directorio.mkdir(); 
-            Generar nuevo = new Generar(rutaCompleta);
-            nuevo.Escribiendo();
+//    public void guardar(){
+//        String usu = System.getProperty("user.name");     
+//        String ruta="C:\\Users\\";
+//        String rutaCompleta=ruta+usu+"\\Documents\\GeneradoPython";
+//        File directorio = new File(rutaCompleta);
+//        
+//        if (!directorio.exists()) {
+//            directorio.mkdir(); 
+//            Generar nuevo = new Generar(rutaCompleta);
+//            nuevo.Escribiendo();
+//
+//        }else{
+//            Generar nuevo = new Generar(rutaCompleta);
+//            nuevo.Escribiendo();
+//        }
+//    }
+    
+    public void descargar(File file){
+        HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();  
 
-        }else{
-            Generar nuevo = new Generar(rutaCompleta);
-            nuevo.Escribiendo();
+        response.setHeader("Content-Disposition", "attachment;filename=archivo.py");  
+        response.setContentLength((int) file.length());  
+        ServletOutputStream out = null;  
+        try {  
+            FileInputStream input = new FileInputStream(file);  
+            byte[] buffer = new byte[1024];  
+            out = response.getOutputStream();  
+            int i = 0;  
+            while ((i = input.read(buffer)) != -1) {  
+                out.write(buffer);
+                out.flush();  
+            }  
+            FacesContext.getCurrentInstance().getResponseComplete();  
+        } catch (IOException err) {  
+            err.printStackTrace();  
+        } finally {  
+            try {  
+                if (out != null) {  
+                    out.close();  
+                }  
+            } catch (IOException err) {  
+                err.printStackTrace();  
+            }    
         }
     }
-
+    
     public Part getFile() {
         return file;
     }

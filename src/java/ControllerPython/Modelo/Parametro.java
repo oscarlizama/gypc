@@ -12,7 +12,9 @@ package ControllerPython.Modelo;
 public class Parametro {
     private String nombreParametro;
     private String tipoParametro;
-
+    
+    public Parametro(){}
+    
     public Parametro(String nombreParametro, String tipoParametro) {
         this.nombreParametro = nombreParametro;
         this.tipoParametro = tipoParametro;

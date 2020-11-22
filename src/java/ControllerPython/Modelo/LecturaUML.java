@@ -35,6 +35,14 @@ public class LecturaUML {
         this.clases.add(c);
     }
     
+    public void clearClases(){
+        this.clases.clear();
+    }
+    
+    public void clearRelaciones(){
+        this.relaciones.clear();
+    }
+    
     public void addClases(String idClaseStarUML, String nombreClase, String visibilidad, boolean Abstracto){
         Clase c = new Clase(idClaseStarUML, nombreClase, visibilidad, Abstracto);
         this.clases.add(c);

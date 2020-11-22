@@ -18,7 +18,9 @@ public class Metodo {
     private String retornaTipo; //Identificado por la etiqueta "<ownedParameter" y mas adelante la opcion ' direction="return" ' 
     //Variables de Relacion
     private ArrayList<Parametro> parametros = new ArrayList<>();
-
+    
+    public Metodo(){}
+    
     public Metodo(String nombreMetodo, String visibilidad, String estatico, String retornaTipo) {
         this.nombreMetodo = nombreMetodo;
         this.visibilidad = visibilidad;
