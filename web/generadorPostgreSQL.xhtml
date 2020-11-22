@@ -12,7 +12,7 @@
        
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color:  #4299DE">
        <!--<nav class="navbar navbar-expand-lg navbar-light bg-light" style=" background-color:  #4299DE">-->
-          <a class="navbar-brand" >Grupo 03</a>
+          <a class="navbar-brand" href="/gypc/faces/index.xhtml">Grupo 03</a>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto"> 
                 <li class="nav-item dropdown">
@@ -20,8 +20,8 @@
                   Generador de codigo
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="background: #4299DE" >
-                  <a class="dropdown-item" style="color: black" href="#">Clases de python</a>
-                  <a class="dropdown-item" style="color: black" href="#">Script PostgreSQL</a>
+                  <a class="dropdown-item" style="color: black" href="/gypc/faces/generadorPython.xhtml">Clases de python</a>
+                  <a class="dropdown-item" style="color: black" href="/gypc/faces/generadorPostgreSQL.xhtml">Script PostgreSQL</a>
                   </div>
                 </li>
                 <li class="nav-item">
@@ -35,8 +35,6 @@
         <div class="container"  aling="center">
             <br/>
             <br/>
-            <br/>
-            <br/>
             <div class="row">
                 <div class="col-sm-12">    
                     <h3 class="text-center" style="color: #ffffff">Genere su Script para PostgreSQL con un solo clic.</h3>
@@ -46,21 +44,28 @@
                     </div>
                 </div>
             </div>
+            <br/>
             <div class="container-md" ALIGN="center">
                 <h:form enctype="multipart/form-data">
-                    <h:inputFile value="#{controladorPostgres.archivoSubido}"/>
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="inputGroupFileAddon01">Subir</span>
+                            </div>
+                            <div class="custom-file">
+                                <h:inputFile styleClass="custom-file-input" id="iptFile" value="#{controladorPostgres.archivoSubido}"/>
+                                <label class="custom-file-label" for="iptFile">Seleccionar Archivo</label>
+                            </div>
+                        </div>
+                    </div>
                     <br/>
                     <br/>
-                    <h:commandButton type="submit" action="#{controladorPostgres.cargar()}" class="btn btn-light btn-lg" value="Generar código fuente"/>
-                    <br/>
-                    <br/>
-                    <h5 class="text-center" style="color: #ffffff">O arrastre su archivo y suelte aquí</h5>
+                    <h:commandButton type="submit" action="#{controladorPostgres.cargar()}" class="btn btn-light btn-lg" value="Generar script de Base de Datos"/>
                 </h:form>
             </div>
             
         </div>            
-            
-            
+        <br/>
         <nav class="navbar fixed-bottom navbar-expand-lg navbar-light nav justify-content-center" style="background-color:  #D6D7E3" >             
             <center>
             <h5 class="text-center" style="font-size: 20px; color: black" >Grupo 03 - 2020</h5>

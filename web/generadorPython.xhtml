@@ -10,7 +10,7 @@
     </h:head>
     <h:body style="background-color: #04365E">
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color:  #4299DE">
-            <a class="navbar-brand" href="#">Grupo03</a>
+            <a class="navbar-brand" href="/gypc/faces/index.xhtml">Grupo03</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
@@ -21,8 +21,8 @@
                     Generador de código
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="background: #237ABF">
-                            <a class="dropdown-item" href="#" style="color: black">Clases de python</a>
-                            <a class="dropdown-item" href="#" style="color: black">Script PostgreSQL</a>
+                            <a class="dropdown-item" href="/gypc/faces/generadorPython.xhtml" style="color: black">Clases de python</a>
+                            <a class="dropdown-item" href="/gypc/faces/generadorPostgreSQL.xhtml" style="color: black">Script PostgreSQL</a>
                         </div>
                     </li>
                     <li class="nav-item">
@@ -47,13 +47,20 @@
             <br/>
             <div class="container-md" align="center">
                 <h:form enctype="multipart/form-data">
-                    <h:inputFile value="#{controladorPython.file}"/>
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="inputGroupFileAddon01">Subir</span>
+                            </div>
+                            <div class="custom-file">
+                                <h:inputFile styleClass="custom-file-input" id="iptFile" value="#{controladorPython.file}"/>
+                                <label class="custom-file-label" for="iptFile">Seleccionar Archivo</label>
+                            </div>
+                        </div>
+                    </div>
                     <br/>
                     <br/>
-                    <h:commandButton type="submit" action="#{controladorPython.uploat()}" class="btn btn-light btn-lg" value="Seleccione su archivo(.xmi)"/>
-                <br/>
-                <br/>
-                <h5 class="text-center" style="color: #ffffff">O arrastre su archivo y suelte aquí</h5>
+                    <h:commandButton type="submit" action="#{controladorPython.uploat()}" class="btn btn-light btn-lg" value="Generar código fuente"/>
                  </h:form>
             </div>
         </div> 

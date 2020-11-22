@@ -10,17 +10,19 @@
     </h:head>
     <h:body style="background-color: #04365e;overflow-y: hidden">
         <header>
-        <nav style="background-color: #4299DE; text-align: center;border-radius: 10px;">
-           
-                <p style="color: white;font-size: 35px;"><b>Herramientas online para aumentar tu productividad</b></p>
-            <p style="color: white;font-size: 16px;">Crea tu código fuente en python, tu script para una base de datos postgreSQL y realiza tus pruebas de ejecucion de codigo python</p>
-       </nav>
-         </header>
+            <div>
+                <nav class="nav justify-content-center" style="background-color: #4299DE; text-align: center;">
+
+                        <p style="color: white;font-size: 35px;"><b>Herramientas online para aumentar tu productividad</b></p>
+                    <p style="color: white;font-size: 16px;">Crea tu código fuente en python, tu script para una base de datos postgreSQL y realiza tus pruebas de ejecucion de codigo python</p>  
+               </nav>
+            </div>        
+        </header>
         <div class="card card-body row justify-content-center align-items-center" style="background-color: #04365e;height:70vh">
             <div class="card-deck row justify-content-center align-items-center">
                 <!-- Contenedor grandote inicio -->
                 <section style="width: 95%;height: 400px;background-color: #237abf;margin: 20px;display: flex;flex-direction: row; flex-wrap: nowrap;  justify-content: space-around; align-items: center">
-                <div class="bg-white col-md-3 col-sm-6" style="height: 325px;">
+                <div class="bg-white card col-md-3 col-sm-6" style="height: 350px;">
                 <div class="card-body">
                     <div class="row card-title align-items-center">
                       <img  src="resources/img/python3.png" class="img-fluid rounded-circle w-25 mb-0 "  alt=""/>
@@ -28,16 +30,17 @@
                     </div>
                   
                  <p class="card-text">
-                  Genera y descarga clases especificadas en el lenguaje de programación Python,a partir de un módelo de clases UML,
-                  en formato .xml
+                  Genera y descarga clases especificadas en el lenguaje de programación Python,a partir de un módelo de clases UML diseñado en StarUML,
+                  en formato .xmi
                   <br></br>
                  </p>
-                 <a href="faces/generadorPython.xhtml" class="btn btn-light btn-block border border-info">Ir</a>
-                 
+                </div>
+                <div class="card-footer bg-white">
+                    <a href="faces/generadorPython.xhtml" class="btn btn-light btn-block border border-info">Ir</a>
                 </div>
               </div>
                 
-              <div class="bg-white col-md-3 col-sm-6" style="height: 325px;">
+              <div class="bg-white card col-md-3 col-sm-6" style="height: 350px;">
                 <div class="card-body">
                     
                   <div class="row card-title align-items-center">
@@ -50,26 +53,32 @@
                   especificando parámetros, y observa los resultados producidos
                   
                  </p>
-                 <a href="#" class="btn btn-light btn-block border border-info">Ir</a>
                  
                 </div>
+                <div class="card-footer bg-white">
+                    <a href="#" class="btn btn-light btn-block border border-info">Ir</a>
+                </div>
+                  
               </div>
                 
-              <div class="bg-white col-md-3 col-sm-6" style="height: 325px;">
+              <div class="bg-white card col-md-3 col-sm-6" style="height: 350px;">
                 <div class="card-body">
                     <div class="row card-title align-items-center">
                       <img  src="resources/img/postgresql2.png" class="img-fluid rounded-circle w-25 mb-0"  alt=""/>
                       
-                      <h5 style="font-size: 15px;">Generar script, xml a posgreSQL</h5>
+                      <h5 style="font-size: 18px;">Generar script, xml a posgreSQL</h5>
                      
                     </div>
                  <p class="card-text">
                      <br></br>
                   Genera y descarga un script de Base de Datos en el SGBD 
-                  PostgreSQL, a partir de un módelo físico de base de datos, en formato .xml
+                  PostgreSQL, a partir de un módelo físico de base de datos, diseñado en PowerDesigner, en formato .pdm
                  
                  </p>
-                    <a href="faces/generadorPosgtreSQL.xhtml" class="btn btn-light btn-block border border-info align-bottom">Ir</a>
+                    
+                </div>
+                <div class="card-footer bg-white">
+                    <a href="faces/generadorPostgreSQL.xhtml" class="btn btn-light btn-block border border-info align-bottom">Ir</a>
                 </div>
               </div>
               <!-- contenedor grandote fin -->
@@ -77,10 +86,13 @@
             
         </div>
        </div>
-        <nav class="navbar fixed-bottom justify-content-center flex-column" style="background-color: #D6D7ED;margin: 10px; text-align: center; border-radius: 10px;">
-            <p style="font-size: 25px;"><b>Grupo 03 - 2020</b></p>
-            <p style="font-size: 19px;"><b>IGF115 - PRN315</b></p>
-        </nav>
+        
+        <div class="container-fluid" aling="center">
+            <nav class="navbar fixed-bottom navbar-expand-lg navbar-light nav justify-content-center" style="background-color:  #D6D7E3" > <center>
+                <h5 class="text-center" style="font-size: 20px; color: black">Grupo 03 - 2020</h5>
+                <h6 class="text-center" style="font-size: 12px">IGF115 - PRN315</h6></center>
+            </nav>
+        </div>
    
     </h:body>
 </html>
