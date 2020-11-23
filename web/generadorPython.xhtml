@@ -53,7 +53,7 @@
                               <span class="input-group-text" id="inputGroupFileAddon01">Subir</span>
                             </div>
                             <div class="custom-file">
-                                <h:inputFile styleClass="custom-file-input" id="iptFile" value="#{controladorPython.file}"/>
+                                <h:inputFile styleClass="custom-file-input iptFile" id="iptFile" value="#{controladorPython.file}"/>
                                 <label class="custom-file-label" for="iptFile">Seleccionar Archivo</label>
                             </div>
                         </div>
@@ -70,7 +70,18 @@
                 <h6 class="text-center" style="font-size: 12px">IGF115 - PRN315</h6></center>
             </nav>
         </div>
-        
+        <script>
+            $('.iptFile').on('change',function(){
+                var fullPath = $(this).val();
+                var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+                var filename = fullPath.substring(startIndex);
+                if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                    filename = filename.substring(1);
+                }                
+                //replace the "Choose a file" label
+                $(this).next('.custom-file-label').html(filename);
+            })
+        </script>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     </h:body>

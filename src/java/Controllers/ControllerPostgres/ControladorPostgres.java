@@ -43,12 +43,17 @@ public class ControladorPostgres {
     }
     
     public void cargar(){
-        try{            
-            LecturaBD lbd = Leer.leerArchivo(archivoSubido.getInputStream());
-            System.out.println("LecturaRealizada");
-            System.out.println();
-            File archivo = Generar.generarscript(lbd);   
-            descargar(archivo);
+        try{  
+            if (archivoSubido != null){
+                String fileName = archivoSubido.getSubmittedFileName();
+                String extension = fileName.substring(fileName.lastIndexOf("."));
+                System.out.println(extension);
+                if (extension.equals(".pdm")){
+                    LecturaBD lbd = Leer.leerArchivo(archivoSubido.getInputStream());
+                    File archivo = Generar.generarscript(lbd);   
+                    descargar(archivo);
+                }                
+            }             
         }catch(Exception e){ 
             e.printStackTrace();
         }

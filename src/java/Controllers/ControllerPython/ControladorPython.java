@@ -34,11 +34,18 @@ public class ControladorPython {
     
     public void uploat(){
         try{
-            LecturaUML lcU = Leer.leerArchivo(file.getInputStream());
-            LecturaUML lcUval = Validar.validar(lcU);
-            //Validar.imprimirClases(lcUval);
-            File adesc = Generar.Escribiendo(lcUval);
-            descargar(adesc);
+            if (file != null){
+                String fileName = file.getSubmittedFileName();
+                String extension = fileName.substring(fileName.lastIndexOf("."));
+                System.out.println(extension);
+                if (extension.equals(".xmi")){
+                    LecturaUML lcU = Leer.leerArchivo(file.getInputStream());
+                    LecturaUML lcUval = Validar.validar(lcU);
+                    //Validar.imprimirClases(lcUval);
+                    File adesc = Generar.Escribiendo(lcUval);
+                    descargar(adesc);                    
+                }                
+            }                        
         }catch(IOException e){
             e.printStackTrace();
         }
