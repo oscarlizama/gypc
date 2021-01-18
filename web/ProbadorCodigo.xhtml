@@ -25,7 +25,7 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" style="color: black" href="#" tabindex="-1" aria-disabled="true">Pruebas de código</a>
+                        <a class="nav-link" style="color: black" href="/gypc/faces/ProbadorCodigo.xhtml" tabindex="-1" aria-disabled="true">Pruebas de código</a>
                     </li>
                 </ul>
              </div>
@@ -54,7 +54,7 @@
                             </div>
                         </div>
                         <div class="form-group mt-4">
-                            <h:outputLabel styleClass="float-left " style="color: #ffffff" value="Parámetros (separados por coma)" for="txt"/>
+                            <h:outputLabel styleClass="float-left " style="color: #ffffff" value="Parámetros (separados por coma): #{controladorProbador.paramsOut}" for="txt"/>
                             <h:inputText styleClass="form-control" value="#{controladorProbador.parametros}" id="txt" label="Parámetros"/>
                         </div>
                     </div>

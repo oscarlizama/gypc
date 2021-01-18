@@ -6,6 +6,7 @@
 package Controllers.ControllerProbador;
 import Controllers.Utils.PostgresUtils.Generar;
 import Controllers.Utils.PostgresUtils.Leer;
+import Controllers.Utils.ProbadorUtils.LeerP;
 import Models.PostgresModels.LecturaBD;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -33,6 +34,15 @@ public class ControladorProbador {
     private String folder;
     private String parametros;
     private String resultadoEx;
+    private String paramsOut;
+
+    public String getParamsOut() {
+        return paramsOut;
+    }
+
+    public void setParamsOut(String paramsOut) {
+        this.paramsOut = paramsOut;
+    }
 
     public String getResultadoEx() {
         return resultadoEx;
@@ -81,7 +91,10 @@ public class ControladorProbador {
                     BufferedReader buffer = new BufferedReader(isReader);
                     String codigo = "";
                     try {
+                        String params = LeerP.param(archivoSubido);
+                        //paramsOut = params;
                         Scanner myReader = new Scanner(ipsStream);
+                        //Extrayendo parámetros                        )
                         while (myReader.hasNextLine()) {
                             codigo += myReader.nextLine() + "\n";
                         }

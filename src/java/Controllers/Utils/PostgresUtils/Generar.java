@@ -55,6 +55,7 @@ public class Generar {
             
             for(Tabla tb: base.getTablas()){
                 tablas+="\nCREATE TABLE "+tb.getNombreTabla()+" (\n";
+                int cantAttr = tb.getAtributoBDs().size();
                 for(AtributoBD atr: tb.getAtributoBDs()){
                     tablas+="\t"+atr.getNombreAtributo()+"\t"+atr.getTipo()+"\t";
                     if(atr.isMandatorio()==true){
@@ -63,23 +64,20 @@ public class Generar {
                     else{
                         tablas+="null";
                     }
-                    if(atr.isUnico()==true){ 
-                        tablas+="\tunique,\n";
+                    if(atr.isUnico()==true){
+                        if (cantAttr == 1) tablas+="\tunique";
+                        else tablas+="\tunique,\n";
                     }
                     else{
-                        tablas+=",\n";
+                        if (cantAttr == 1) tablas+="";
+                        else tablas+=",\n";
                     }
-                    
+                    cantAttr--;
                 }
                 int conPK = 1;
                 for(AtributoBD atr: tb.getAtributoBDs()){
                     if(atr.isLlavePrimaria()==true){
-                        if (conPK > 1){
                             tablas+=",\n\tconstraint PK_"+tb.getNombreTabla()+" primary key ("+atr.getNombreAtributo()+")"; 
-                        }else{
-                            tablas+="\tconstraint PK_"+tb.getNombreTabla()+" primary key ("+atr.getNombreAtributo()+")";                             
-                        }   
-                        conPK++;
                     }
                 }
                 tablas+="\n);\n\n";
@@ -124,7 +122,7 @@ public class Generar {
                 if(fk.getOnUpdate().equals("1")) onupdate="restrict";
                  
                 pw.write(inicio + thija+"\n");               
-                pw.write("add constrait "+ fk.getNombreLlave()+" foreign key ("+ahija+")\n");
+                pw.write("add constraint "+ fk.getNombreLlave()+" foreign key ("+ahija+")\n");
                 pw.write("references "+tpadre+"("+apadre+")\n");
                 pw.write("on delete "+ondelete+" on update "+onupdate+";\n"); 
                 pw.write("\n");
