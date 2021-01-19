@@ -80,19 +80,31 @@ public class ControladorProbador {
         this.folder = folder;
     }
     
+    public void leerParams(){
+        try {
+            if (archivoSubido != null){
+                String fileName = archivoSubido.getSubmittedFileName();
+                String extension = fileName.substring(fileName.lastIndexOf("."));
+                if (extension.equals(".py")){
+                    String[] params = LeerP.param(archivoSubido);
+                    paramsOut = params[0];
+                }                
+            }            
+        } catch (Exception e) {
+        }
+    }
+    
     public void cargar(){
         try{  
+            System.out.println("entre a cargar");
+            System.out.println(archivoSubido.toString());
             if (archivoSubido != null){
                 String fileName = archivoSubido.getSubmittedFileName();
                 String extension = fileName.substring(fileName.lastIndexOf("."));
                 if (extension.equals(".py")){
                     InputStream ipsStream = archivoSubido.getInputStream();
-                    InputStreamReader isReader = new InputStreamReader(ipsStream);
-                    BufferedReader buffer = new BufferedReader(isReader);
                     String codigo = "";
                     try {
-                        String params = LeerP.param(archivoSubido);
-                        //paramsOut = params;
                         Scanner myReader = new Scanner(ipsStream);
                         //Extrayendo parámetros                        )
                         while (myReader.hasNextLine()) {
@@ -120,6 +132,7 @@ public class ControladorProbador {
                     System.out.println("------------resultados------------");
                     System.out.println("----------------------------------");                    
                     String linea = in.readLine();
+                    System.out.println("linea es " + linea);
                     String res = linea;
                     boolean prim = true;
                     while(linea != null){
@@ -134,7 +147,7 @@ public class ControladorProbador {
                         }
                     }
                     resultadoEx = res;
-                    System.out.println(res);
+                    System.out.println("ete res: " + res);
                 }                
             }             
         }catch(Exception e){ 
